@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<div ng-controller="indexcontroller">
+    <h2 class="page-title">
+        {{'AutomaticGeotechnicalProfileCreationTool'|translate}}
+      
+    </h2>
+    <hr />
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 blue" href="~/Fuzzy/FuzzySet">
+                <div class="visual">
+                    <i class="fa fa-list"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="12,5">{{'FuzzyLogicModule' | translate}}</span>
+                    </div>
+                   
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <a class="dashboard-stat dashboard-stat-v2 red" href="~/Graph/Visualize">
+                <div class="visual">
+                    <i class="fa fa-edit"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <span data-counter="counterup" data-value="12,5">{{'GraphModule' | translate}}</span>
+                    </div>
+                   
+                </div>
+            </a>
+        </div>        
+    </div>
+</div>
+

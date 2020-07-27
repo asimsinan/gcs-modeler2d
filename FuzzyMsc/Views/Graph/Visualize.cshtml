@@ -1,0 +1,275 @@
+﻿
+@{
+    ViewBag.Title = "Visualization";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="visualizationcontroller">
+
+    @*<p>{{ 'HEADLINE' | translate }}</p>
+        <p>{{ 'PARAGRAPH' | translate }}</p>
+        <p translate>PASSED_AS_TEXT</p>
+        <p translate="PASSED_AS_ATTRIBUTE"></p>
+        <p translate>{{ 'PASSED_AS_INTERPOLATION' }}</p>
+        <p translate="{{ 'PASSED_AS_INTERPOLATION' }}"></p>
+        <p translate="VARIABLE_REPLACEMENT" translate-values="{ name: 'PascalPrecht' }"></p>
+        <p translate>MISSING_TRANSLATION</p>*@
+    <div id="panelPortlet1" class="panel panel-primary">
+        <div class="panel-heading">
+            <span>{{'GraphCreationPage' | translate}}</span>
+        </div>
+
+        <div class="panel-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">{{'StepOneRuleSelection' | translate}}</span>
+                </div>
+                <div class="panel-body">
+
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#rule"><i class="fa fa-edit"></i> {{'Selection' | translate}}</a></li>
+                        <li ng-show="rule"><a data-toggle="tab" href="#rule1"><i class="fa fa-list-ul"></i> {{'Rules' | translate}}</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="rule" class="tab-pane fade in active">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label">{{'PleaseMakeARuleSelection' | translate}}</label>
+                                    <div class="col-md-6">
+                                        <select class="form-control" ng-model="rule" ng-options="rule.ruleName for set in setList" ng-change="FetchRuleTextAndResistivity(rule)">
+                                            <option value="">{{'Select' | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="rule1" class="tab-pane fade">
+                            <div class="col-md-12">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr><th>{{'RuleSetOfFuzzyLogic' | translate}}</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in ruleTextList">
+                                            <td>{{item.RuleText}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr><th>{{'ValueRangesOfResistivities' | translate}}</th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in resistivityList">
+                                            <td>{{item.name}}</td>
+                                            <td>{{item.MinValue}}</td>
+                                            <td>{{item.MaxValue}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="FetchRule(rule)" ng-disabled="!rule">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>{{'SaveAndContinue' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-show="panelExcelSec">
+                <div class="panel-heading">
+                    <span class="panel-title">{{'StepTwoExcelFile' | translate}}</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-default" type="file" ngf-select="uploadFiles($file, $invalidFiles)"
+                                    accept="excel/*" ngf-max-height="1000" ngf-max-size="1MB">
+                                {{'SelectAnExcelFile' | translate}}
+                            </button>
+                            <span ng-show="f.progress >= 0 && excel.adi && !excelError" style="color:mediumseagreen">
+                                <i class="fa fa-2x fa-check"></i> {{'LoadingSuccessful' | translate}}
+                            </span>
+                            <span ng-show="f.progress == 0 && excel.adi && !excelError" style="color:darkred">
+                                <i class="fa fa-2x fa-times"></i> {{'LoadingUnsuccessful' | translate}}
+                            </span>
+                            <span ng-show="excelError" style="color:darkred">
+                                <i class="fa fa-2x fa-times"></i> {{'ExcelWarning' | translate}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="CheckExcel(excel)" ng-disabled="!excel.adi">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>{{'SaveAndContinue' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-show="panelSettings">
+                <div class="panel-heading">
+                    <span class="panel-title">{{'StepThreeSettings' | translate}}</span>
+                </div>
+                <div class="panel-body">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" title="{{'TitleOfTheGraphDescription'|translate}}">{{'TitleOfTheGraph'|translate}}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="" class="form-control" ng-model="parameters.Title" ng-init="parameters.Title= 'Enter Title Here'" />@*{{'GeotechnicalSectionAnalysis' | translate}}*@
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" title="{{'SubtitleOfTheGraphDescription'|translate}}">{{'SubtitleOfTheGraph'|translate}}</label>
+                                <div class="col-sm-9">
+                                    <textarea rows="3" class="form-control" ng-model="parameters.Subtitle" ng-init="parameters.Subtitle = 'Enter Subtitle Here'"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" title="{{'WillLinesAppearDescription'|translate}}">{{'WillLinesAppear'|translate}}</label>
+                                <div class="col-sm-9">
+                                    <input type="checkbox" name="" ng-model="parameters.IsChecked" /><span ng-show="parameters.IsChecked"> {{'Yes' | translate}}</span><span ng-show="!parameters.CizimlerGorunsunMu"> {{'No' | translate}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" title="{{'HorizontalResValDescription'|translate}}">{{'HorizontalResVal'|translate}}</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="" class="form-control" ng-model="parameters.ResolutionX" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" title="{{'VerticalResValDescription'|translate}}">{{'VerticalResVal'|translate}}</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="" class="form-control" ng-model="parameters.ResolutionY" min="0" max="10000" prevent-typing-greater placeholder="Min. 0 - Max 10000" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" title="{{'HorizontalScaleRangeDescription'|translate}}">{{'HorizontalScaleRange'|translate}}</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="" class="form-control" ng-model="parameters.ScaleX" min="1" max="1000" prevent-typing-greater placeholder="Min. 1 - Max 1000" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" title="{{'VerticalScaleRangeDescription'|translate}}">{{'VerticalScaleRange'|translate}}</label>
+                                <div class="col-sm-9">
+                                    <input type="number" name="" class="form-control" ng-model="parameters.ScaleY" min="1" max="1000" prevent-typing-greater placeholder="Min. 1 - Max 1000" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" title="{{'SeismicRelevanceRateDescription'|translate}}">{{'SeismicRelevanceRate'|translate}}</label>
+                                <div class="col-md-9">
+                                    <input type="number" name="" class="form-control" ng-model="parameters.SeismicRatio" min="1" max="100" prevent-typing-greater placeholder="Min. 1 - Max 100" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label" title="{{'ResistivityProximityRateDescription'|translate}}">{{'ResistivityProximityRate'|translate}}</label>
+                                <div class="col-md-9">
+                                    <input type="number" name="" class="form-control" ng-model="parameters.ResistivityRatio" min="1" max="100" prevent-typing-greater placeholder="Min. 1 - Max 100" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="VisualizationSettings(excel, parameters, count)">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>{{'SaveAndDraw' | translate}}
+                            </button>
+                            <button type="button" class="btn btn-labeled btn-danger pull-right" style="margin-left: 10px;" ng-click="DefaultSettings()">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>{{'ResetToDefault' | translate}}
+                            </button>
+                            <button type="button" class="btn btn-labeled btn-warning pull-right" style="margin-left: 10px;" ng-click="Clear()">
+                                <span class="btn-label">
+                                    <i class="fa fa-check"></i>
+                                </span>{{'Clean' | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default" ng-show="panelGraphic">
+                <div class="panel-heading">
+                    <span class="panel-title">{{'ResultGraph' | translate}}</span>
+                    <div class="mt-radio-inline pull-right" style="margin-left: 10px;">
+                        <label class="mt-radio">
+                            <input name="optionsRadios" id="optionsRadios26" value="1" ng-checked="true" ng-model="display" ng-init="gorunum = 1" type="radio">{{'NormalView' | translate}}
+                            <span></span>
+                        </label>
+                        <label class="mt-radio">
+                            <input name="optionsRadios" id="optionsRadios25" value="2" checked="" ng-model="display" type="radio">{{'DetailedView' | translate}}
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="panel-body" style="overflow-x:scroll; overflow-y:scroll; width:100%; height:800px" id="visDiv">
+                    <div class="row" id="container" style="height: 400%; width: 400%" ng-show="display == 2">
+                    </div>
+                    <div class="row" id="container1" style="height: 100%; width: 100%" ng-show="display == 1">
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" ng-show="panelGraphic">
+                <div class="panel-heading">
+                    <span class="panel-title">{{'ResultSuccess' | translate}}</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">{{count}}</div>
+                    <div class="row">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">{{'Order' | translate}}</th>
+                                    <th class="text-center">{{'FirstNode' | translate}}</th>
+                                    <th class="text-center">{{'SecondNode' | translate}}</th>
+                                    <th class="text-center">{{'Connection' | translate}}</th>
+                                    <th class="text-center">{{'Normal' | translate}}</th>
+                                    <th class="text-center">{{'Pocket' | translate}}</th>
+                                    <th class="text-center">{{'Fault' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" ng-repeat="(key, item) in visualizationInfo">
+                                    <td>{{key + 1}}</td>
+                                    <td>{{item.FirstNoe}}</td>
+                                    <td>{{item.SecondNode}}</td>
+                                    <td>{{item.Connection}}</td>
+                                    <td>{{item.Normal}}</td>
+                                    <td>{{item.Closure}}</td>
+                                    <td>{{item.Fault}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

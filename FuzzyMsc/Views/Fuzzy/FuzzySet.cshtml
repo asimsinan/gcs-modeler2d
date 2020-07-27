@@ -1,0 +1,365 @@
+﻿
+@{
+    ViewBag.Title = "Fuzzy Set Creation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="fuzzycontroller">
+
+    <div id="panelPortlet1" class="panel panel-primary">
+        <div class="panel-heading">
+            <span>{{'FuzzySetCreationPage'|translate}}</span>
+            <paneltool tool-collapse="tool-collapse"></paneltool>
+        </div>
+        <div collapse="panelPortlet1" class="panel-wrapper">
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label">{{'NameOfTheRuleSet' | translate}}</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" ng-model="SetName" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                   
+                    <div class="col-md-12">
+
+                        <div id="panelPortlet1" class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>{{'PleaseEnterTheResistivityValuesAndRanges'|translate}}</span>
+                                <paneltool tool-collapse="tool-collapse"></paneltool>
+                            </div>
+                            <div collapse="panelPortlet1" class="panel-wrapper">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-6 control-label">{{'Value' | translate}}</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="resistivity" class="form-control" ng-model="resistivity.name" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">{{'MinValue' | translate}}</label>
+                                                <div class="col-sm-7">
+                                                    <input type="number" name="resistance" class="form-control" ng-model="resistivity.minValue" min="0" max="1000" prevent-typing-greater placeholder="Min. 0" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">{{'MaxValue' | translate}}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" name="saturation" class="form-control" ng-model="resistivity.maxValue" min="0" max="1000" prevent-typing-greater placeholder="Max. 1000" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="UpdateResistivity(resistivity)" ng-show="resistivityButtonUpdate">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>{{'Update' | translate}}
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="AddResistivity(resistivity)" ng-show="resistivityButtonSave">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>{{'Add' | translate}}
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="CancelResistivity()" ng-show="resistivityButtonCancel">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>{{'Cancel' | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="resistivityList.length > 0">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>{{'Resistivity' | translate}}</th>
+                                                        <th>{{'MinValue' | translate}}</th>
+                                                        <th>{{'MaxValue' | translate}}</th>
+                                                        <th>{{'Operation' | translate}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in resistivityList">
+                                                        <td>
+                                                            <div ng-show="EditResistivity == true">{{item.name}}</div>
+                                                            <div ng-hide="EditResistivity == true">{{item.name}}</div>
+                                                        </td>
+                                                        <td>{{item.minValue}}</td>
+                                                        <td>{{item.maxValue}}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-labeled btn-info" ng-click="EditResistivity(item,$index)">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'Update' | translate}}
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-danger" ng-click="DeleteResistivity($index)">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'Delete' | translate}}
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" ng-show="resistivityList.length > 0">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="SaveResistivity(resistivityList)">
+                                                <span class="btn-label">
+                                                    <i class="fa fa-check"></i>
+                                                </span>{{'Save' | translate}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12" ng-show="panelGround">
+
+                        <div id="panelPortlet1" class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>{{'PleaseEnterTheGroundResultTypeAndRanges' | translate}}</span>
+                                <paneltool tool-collapse="tool-collapse"></paneltool>
+                            </div>
+                            <div collapse="panelPortlet1" class="panel-wrapper">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-6 control-label">{{'Value' | translate}}</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="resistivity" class="form-control" ng-model="ground.name" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">{{'MinValue' | translate}}</label>
+                                                <div class="col-sm-7">
+                                                    <input type="number" name="resistance" class="form-control" ng-model="ground.minValue" min="0" max="1000" prevent-typing-greater placeholder="Min. 0" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">{{'MaxValue' | translate}}</label>
+                                                <div class="col-sm-8">
+                                                    <input type="number" name="saturation" class="form-control" ng-model="ground.maxValue" min="0" max="1000" prevent-typing-greater placeholder="Max. 1000" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="col-md-12">
+                                                <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="UpdateGround(ground)" ng-show="groundButtonUpdate">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>{{'Update' | translate}}
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="AddGround(ground)" ng-show="groundButtonSave">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>{{'Add' | translate}}
+                                                </button>
+                                                <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="CancelGround()" ng-show="groundButtonCancel">
+                                                    <span class="btn-label">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>{{'Cancel' | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" ng-show="groundList.length > 0">
+                                        <div class="col-md-12">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>{{'Ground' | translate}}</th>
+                                                        <th>{{'MinValue' | translate}}</th>
+                                                        <th>{{'MaxValue' | translate}}</th>
+                                                        <th>{{'Operation' | translate}}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in groundList">
+                                                        <td>
+                                                            <div ng-show="EditGround == true">{{item.name}}</div>
+                                                            <div ng-hide="EditGround == true">{{item.name}}</div>
+                                                        </td>
+                                                        <td>{{item.minValue}}</td>
+                                                        <td>{{item.maxValue}}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-labeled btn-info" ng-click="EditGround(item,$index)">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'Update' | translate}}
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-danger" ng-click="DeleteGround($index)">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'Delete' | translate}}
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" ng-show="groundList.length > 0">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="SaveGround(groundList)">
+                                                <span class="btn-label">
+                                                    <i class="fa fa-check"></i>
+                                                </span>{{'Save' | translate}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12" ng-show="panelRules">
+
+                        <div id="panelPortlet1" class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>{{'PleaseDefineTheFuzzyLogicRules' | translate}}</span>
+                                <paneltool tool-collapse="tool-collapse"></paneltool>
+                            </div>
+                            <div collapse="panelPortlet1" class="panel-wrapper">
+                                <div class="panel-body">
+                                    <div id="panelPortlet1" class="panel panel-default">
+                                        <div collapse="panelPortlet1" class="panel-wrapper">
+                                            <div class="panel-body">
+
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="col-md-6 control-label">{{'GroundType' | translate}}</label>
+                                                            <div class="col-md-6">
+                                                                <select class="form-control" ng-model="rule.resistivity">
+                                                                    @*<option value="">Select Ground Type</option>*@
+                                                                    <option ng-repeat="item in resistivityList" value="{{item.name}}">{{item.name}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="col-md-6 control-label text-center">{{'Then' | translate}}</label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group">
+                                                            <label class="col-md-3 control-label">{{'Ground' | translate}}</label>
+                                                            <div class="col-md-9 selectContainer">
+                                                                <select class="form-control" ng-model="rule.ground">
+                                                                    <option ng-repeat="item in groundList" value="{{item.name}}">{{item.name}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="col-md-12">
+                                                            <button type="button" class="btn btn-labeled btn-info" style="margin-left: 10px;" ng-click="UpdateRule(rule)" ng-show="ruleButtonUpdate">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'Update' | translate}}
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="AddRule(rule)" ng-show="ruleButtonSave">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'Add' | translate}}
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-danger" style="margin-left: 10px;" ng-click="CancelRule()" ng-show="ruleButtonCancel">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'Cancel' | translate}}
+                                                            </button>
+                                                            <button type="button" class="btn btn-labeled btn-success" style="margin-left: 10px;" ng-click="AutomaticDefinition()" title="Automatic Rule Definitions">
+                                                                <span class="btn-label">
+                                                                    <i class="fa fa-check"></i>
+                                                                </span>{{'AddAutomatically' | translate}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row" ng-show="ruleList.length > 0">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>{{'Rules' | translate}}</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="item in ruleList">
+                                                                    <td>{{item.text}}</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-labeled btn-info" ng-click="EditRule(item,$index)">
+                                                                            <span class="btn-label">
+                                                                                <i class="fa fa-check"></i>
+                                                                            </span>{{'Update' | translate}}
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-labeled btn-danger" ng-click="DeleteRule($index)">
+                                                                            <span class="btn-label">
+                                                                                <i class="fa fa-check"></i>
+                                                                            </span>{{'Delete' | translate}}
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+            
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="SaveSet(ruleList)" ng-disabled="ruleList.length == 0">
+                            <span class="btn-label">
+                                <i class="fa fa-check"></i>
+                            </span>{{'SaveTheSet' | translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

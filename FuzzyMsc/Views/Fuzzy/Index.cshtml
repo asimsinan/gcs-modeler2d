@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="fuzzycontroller">
+    <div id="panelPortlet1" class="panel panel-primary">
+        <div class="panel-heading">
+            <span>Rule Addition Page</span>
+            <paneltool tool-collapse="tool-collapse"></paneltool>
+        </div>
+        <div collapse="panelPortlet1" class="panel-wrapper">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">Resistivity</label>
+                            <div class="col-sm-6">
+                                <input type="number" name="resistivity" class="form-control" ng-model="groundInfo.resistivity" min="1" max="100" prevent-typing-greater />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label">Resistance</label>
+                            <div class="col-sm-7">
+                                <input type="number" name="resistance" class="form-control" ng-model="groundInfo.resistance" min="1" max="1000" prevent-typing-greater />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Saturation</label>
+                            <div class="col-sm-8">
+                                <input type="number" name="saturation" class="form-control" ng-model="groundInfo.saturation" min="1" max="10" prevent-typing-greater/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="Add(groundInfo)">
+                            <span class="btn-label">
+                                <i class="fa fa-check"></i>
+                            </span>Add
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover" ng-show="groundInfo.length > 0">
+                            <thead>
+                                <tr>
+                                    <th>Resistivity</th>
+                                    <th>Resistance</th>
+                                    <th>Saturation</th>
+                                    <th>Operation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in groundInfo">
+                                    <td>{{item.resistivity}}</td>
+                                    <td>{{item.resistance}}</td>
+                                    <td>{{item.saturation}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-labeled btn-danger pull-right" ng-click="Delete($index)">
+                                            <span class="btn-label">
+                                                <i class="fa fa-check"></i>
+                                            </span>Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover" ng-show="resultValues.length > 0">
+                            <thead>
+                                <tr>
+                                    <th>Results</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in resultValues">
+                                    <td>Result {{$index}}: {{item.Success}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-labeled btn-success pull-right" style="margin-left: 10px;" ng-click="Results(groundInfo)">
+                            <span class="btn-label">
+                                <i class="fa fa-check"></i>
+                            </span>Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

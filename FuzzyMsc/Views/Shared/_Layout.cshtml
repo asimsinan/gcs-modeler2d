@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - GCS-Modeler2D</title>
+    @*<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />*@
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+    @*    <link href="~/Scripts/assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />*@
+    @*<link href="~/Scripts/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />*@
+    <link href="~/Scripts/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css" />
+    @*<link href="~/Scripts/assets/global/plugins/fullcalendar/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />*@
+    <link href="~/Scripts/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="~/Scripts/assets/global/plugins/ion.rangeslider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+
+    <!-- END PAGE LEVEL PLUGIN STYLES -->
+    <!-- BEGIN PAGE STYLES -->
+    <link href="~/Scripts/assets/pages/css/tasks.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <link href="~/Scripts/assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/layouts/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="~/Scripts/assets/layouts/layout/css/themes/light.css" rel="stylesheet" type="text/css" id="style_color" />
+    <link href="~/Scripts/assets/layouts/layout/css/custom.css" rel="stylesheet" type="text/css" />
+    <!-- END THEME STYLES -->
+
+    <script src="~/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/vendor/ng-file-upload-bower-12.2.13/ng-file-upload-shim.min.js"></script>
+    <script src="~/Scripts/vendor/ng-file-upload-bower-12.2.13/ng-file-upload.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.5/angular-cookies.js"></script>
+    <script src="https://cdn.rawgit.com/angular-translate/bower-angular-translate/2.18.1/angular-translate.js"></script>
+    <script src="https://cdn.rawgit.com/angular-translate/bower-angular-translate-interpolation-messageformat/2.18.1/angular-translate-interpolation-messageformat.js"></script>
+    <script src="https://cdn.rawgit.com/angular-translate/bower-angular-translate-storage-cookie/2.18.1/angular-translate-storage-cookie.js"></script>
+    <script src="https://cdn.rawgit.com/angular-translate/bower-angular-translate-storage-local/2.18.1/angular-translate-storage-local.js"></script>
+    <script src="https://cdn.rawgit.com/angular-translate/bower-angular-translate-loader-url/2.18.1/angular-translate-loader-url.js"></script>
+    <script src="https://cdn.rawgit.com/angular-translate/bower-angular-translate-loader-static-files/2.18.1/angular-translate-loader-static-files.js"></script>
+    <script src="https://cdn.rawgit.com/angular-translate/bower-angular-translate-handler-log/2.18.1/angular-translate-handler-log.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="~/Scripts/vendor/ngSweetAlert-master/SweetAlert.min.js"></script>
+
+    <script src="~/Scripts/custom/mainfuzzy.controller.js"></script>
+    <script src="~/Scripts/custom/index.controller.js"></script>
+    <script src="~/Scripts/custom/fuzzy.controller.js"></script>
+    <script src="~/Scripts/custom/directives/limittomax.directive.js"></script>
+    <script src="~/Scripts/custom/directives/preventtypinggreater.directive.js"></script>
+    <script src="~/Scripts/custom/directives/filereader.directive.js"></script>
+    <script src="~/Scripts/custom/fuzzy.constant.js"></script>
+    <script src="~/Scripts/custom/visualization.controller.js"></script>
+    <script src="~/Scripts/custom/readfiledata.factory.js"></script>
+    <script src="~/Scripts/custom/translations.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/annotations.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://rawgithub.com/highcharts/draggable-points/master/draggable-points.js"></script>
+</head>
+<body ng-app="mainfuzzy">
+
+    <div class="page-wrapper">
+        <!-- BEGIN HEADER -->
+        <div class="page-header navbar">
+            <!-- BEGIN HEADER INNER -->
+            <div class="page-header-inner">
+                <!-- BEGIN LOGO -->
+                <div class="page-logo">
+                    <a href="/Home/Index">
+                        <img src="~/Scripts/assets/layouts/layout/img/logo.png" alt="logo" class="logo-default" />
+                    </a>
+                    <div class="menu-toggler sidebar-toggler hide">
+                        <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+                    </div>
+                </div>
+                <!-- END LOGO -->
+                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                </a>
+                <!-- END RESPONSIVE MENU TOGGLER -->
+                <!-- BEGIN TOP NAVIGATION MENU -->
+                <div class="top-menu">
+                    <ul class="nav navbar-nav pull-right">
+                        <!-- BEGIN LANGUAGE BAR -->
+                        <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                        <li class="dropdown dropdown-language">
+
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" ng-show="preferredLanguage == 'en'">
+                                <img src="~/Scripts/assets/global/img/flags/gb.png" />
+                                <span class="langname"> EN </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false" ng-show="preferredLanguage == 'tr'">
+                                <img src="~/Scripts/assets/global/img/flags/tr.png" />
+                                <span class="langname"> TR </span>
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default">
+                                <li>
+                                    <a href="javascript:;" ng-click="preferredLanguage='en'; setLanguage('en')">
+                                        <img src="~/Scripts/assets/global/img/flags/gb.png" /> {{ 'English' | translate}}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" ng-click="preferredLanguage='tr'; setLanguage('tr')">
+                                        <img src="~/Scripts/assets/global/img/flags/tr.png" /> {{ 'Turkish' | translate}}
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                        <!-- END LANGUAGE BAR -->
+                        <!-- BEGIN QUICK SIDEBAR TOGGLER -->
+                        <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                        @*<li class="dropdown dropdown-quick-sidebar-toggler">
+                                <a href="javascript:;" class="dropdown-toggle">
+                                    <i class="icon-logout"></i>
+                                </a>
+                            </li>*@
+                        <!-- END QUICK SIDEBAR TOGGLER -->
+                    </ul>
+                </div>
+                <!-- END TOP NAVIGATION MENU -->
+            </div>
+            <!-- END HEADER INNER -->
+        </div>
+        <!-- END HEADER -->
+        <!-- BEGIN CONTAINER -->
+        <div class="page-container">
+            <!-- BEGIN SIDEBAR -->
+            <div class="page-sidebar-wrapper">
+                <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+                <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+                <div class="page-sidebar navbar-collapse collapse">
+                    <!-- BEGIN SIDEBAR MENU -->
+                    <ul class="page-sidebar-menu page-header-fixed" data-auto-scroll="true" data-slide-speed="200">
+                        <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+                        @*<li class="sidebar-toggler-wrapper">
+                                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                                <div class="sidebar-toggler">
+                                </div>
+                                <!-- END SIDEBAR TOGGLER BUTTON -->
+                            </li>*@
+                        <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
+
+                        <li>
+                            <a href="/Home/Index">
+                                <i class="icon-home"></i>
+                                <span class="title">{{ 'MainPage' | translate}}</span>
+                                <span class="selected"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Fuzzy/FuzzySet">
+                                <i class="icon-basket"></i>
+                                <span class="title">{{ 'FuzzySet' | translate}}</span>
+                                <span class="selected"></span>
+
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Graph/Visualize">
+                                <i class="icon-tag"></i>
+                                <span class="title">{{ 'Graph' | translate}}</span>
+                                <span class="selected"></span>
+
+                            </a>
+                        </li>
+                        
+                    </ul>
+                    <!-- END SIDEBAR MENU -->
+                </div>
+            </div>
+            <!-- END SIDEBAR -->
+            <!-- BEGIN CONTENT -->
+            <div class="page-content-wrapper">
+                <div class="page-content">
+
+                    <!-- BEGIN PAGE HEADER-->
+                    @*<h3 class="page-title">
+                            Blank Page <small>blank page</small>
+                        </h3>*@
+                    <!-- END PAGE HEADER-->
+                    <!-- BEGIN PAGE CONTENT-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            @RenderBody()
+                        </div>
+                    </div>
+                    <!-- END PAGE CONTENT-->
+                </div>
+            </div>
+            <!-- END CONTENT -->
+        </div>
+        <!-- END CONTAINER -->
+        <!-- BEGIN FOOTER -->
+        @*<div class="page-footer page-footer-fixed page-footer-fixed-mobile navbar navbar-fixed-bottom">
+                <div class="page-footer-inner">
+                    2014 &copy; Metronic by keenthemes.
+                </div>
+                <div class="page-footer-tools">
+                    <span class="go-top">
+                        <i class="fa fa-angle-up"></i>
+                    </span>
+                </div>
+            </div>*@
+        <!-- END FOOTER -->
+
+    </div>
+    @*    <script src="~/Scripts/bootstrap.min.js"></script>*@
+
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+    <!-- BEGIN CORE PLUGINS -->
+    <!--[if lt IE 9]>
+    <script src="../assets/global/plugins/respond.min.js"></script>
+    <script src="../assets/global/plugins/excanvas.min.js"></script>
+    <![endif]-->
+    @*<script src="~/Scripts/assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>*@
+    @*<script src="~/Scripts/assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+    <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+    @*<script src="~/Scripts/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/pages/scripts/custom.min.js"></script>
+    <script src="~/Scripts/assets/global/plugins/fullcalendar/lib/jquery-ui.custom.min.js"></script>
+    <script src="~/Scripts/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Scripts/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/ion.rangeslider/js/ion.rangeSlider.min.js"></script>
+    @*<script src="~/Scripts/assets/global/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    @*<script src="~/Scripts/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+    <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
+    @*<script src="~/Scripts/assets/global/plugins/fullcalendar/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+    @*<script src="~/Scripts/assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>*@
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    @*<script src="~/Scripts/assets/global/scripts/metronic.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/global/scripts/app.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/assets/layouts/layout/scripts/layout.js" type="text/javascript"></script>
+    @*<script src="~/Scripts/assets/layouts/layout/scripts/quick-sidebar.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+    @*<script src="~/Scripts/assets/admin/pages/scripts/index.js" type="text/javascript"></script>*@
+    @*<script src="~/Scripts/assets/admin/pages/scripts/tasks.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/assets/pages/scripts/tasks.min.js" type="text/javascript"></script>
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <script>
+        jQuery(document).ready(function () {
+            App.init(); // init metronic core componets
+            Layout.init(); // init layout
+        });
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+
+
+</html>
