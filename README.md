@@ -11,6 +11,7 @@ Storage and management of rules and visualization data was done with Microsoft S
 - We used Microsoft Visual Studio 2017 as the software development IDE
 
 # How to run the software
+  0. Prerequisites: Visual Studio 2017 IDE, a Windows based hosting that supports .NET and IIS enabled.
   1. You can use the publish tool from Visual Studio to publish this project to a website.
   2. Open the FuzzyMsc.sln file with Visual Studio.
   3. In Solution Explorer, right-click on the master project and choose Publish.
