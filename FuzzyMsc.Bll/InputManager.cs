@@ -12,11 +12,11 @@ namespace FuzzyMsc.Bll
             get
             {
                 var list = new List<VariableDTO>();
-                list.Add(new VariableDTO { VariableName = "CokGevsek", VisibleName = "Çok Gevşek", MinValue = 0, MaxValue = 200 });
-                list.Add(new VariableDTO { VariableName = "Gevsek", VisibleName = "Gevşek", MinValue = 200, MaxValue = 300 });
-                list.Add(new VariableDTO { VariableName = "Orta", VisibleName = "Orta", MinValue = 300, MaxValue = 500 });
-                list.Add(new VariableDTO { VariableName = "Siki", VisibleName = "Sıkı", MinValue = 500, MaxValue = 700 });
-                list.Add(new VariableDTO { VariableName = "Kaya", VisibleName = "Kaya", MinValue = 700, MaxValue = Double.MaxValue });
+                list.Add(new VariableDTO { Name = "CokGevsek", VisibleName = "Çok Gevşek", MinValue = 0, MaxValue = 200 });
+                list.Add(new VariableDTO { Name = "Gevsek", VisibleName = "Gevşek", MinValue = 200, MaxValue = 300 });
+                list.Add(new VariableDTO { Name = "Orta", VisibleName = "Orta", MinValue = 300, MaxValue = 500 });
+                list.Add(new VariableDTO { Name = "Siki", VisibleName = "Sıkı", MinValue = 500, MaxValue = 700 });
+                list.Add(new VariableDTO { Name = "Kaya", VisibleName = "Kaya", MinValue = 700, MaxValue = Double.MaxValue });
                 return list;
             }
             set { }
@@ -26,9 +26,9 @@ namespace FuzzyMsc.Bll
             get
             {
                 var list = new List<VariableDTO>();
-                list.Add(new VariableDTO { VariableName = "GazaDoygun", VisibleName = "Gaza Doygun", MinValue = 0, MaxValue = 2 });
-                list.Add(new VariableDTO { VariableName = "GazaVeSuyaDoygun", VisibleName = "Gaza Ve Suya Doygun", MinValue = 2, MaxValue = 4 });
-                list.Add(new VariableDTO { VariableName = "SuyaDoygun", VisibleName = "SuyaDoygun", MinValue = 4, MaxValue = Double.MaxValue });
+                list.Add(new VariableDTO { Name = "GazaDoygun", VisibleName = "Gaza Doygun", MinValue = 0, MaxValue = 2 });
+                list.Add(new VariableDTO { Name = "GazaVeSuyaDoygun", VisibleName = "Gaza Ve Suya Doygun", MinValue = 2, MaxValue = 4 });
+                list.Add(new VariableDTO { Name = "SuyaDoygun", VisibleName = "SuyaDoygun", MinValue = 4, MaxValue = Double.MaxValue });
                 return list;
             }
             set { }

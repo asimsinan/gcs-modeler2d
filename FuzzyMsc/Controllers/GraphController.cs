@@ -1,6 +1,7 @@
 ﻿using FuzzyMsc.Bll;
 using FuzzyMsc.Dto;
 using FuzzyMsc.Dto.VisualizationDTOS;
+using FuzzyMsc.Entity.Model;
 using System;
 using System.IO;
 using System.Web.Mvc;
@@ -34,7 +35,9 @@ namespace FuzzyMsc.Controllers
 		[HttpGet]
 		public JsonResult FetchSetList()
 		{
-			var result = _graphManager.FetchSetList();
+			//var result = _graphManager.FetchSetList();
+			Rule rule = (Rule)Session["rule"];
+			var result = _graphManager.FetchSetListLite(rule);
 			return Json(new { Success = result.Success, Message = result.Message, ResultObject= result.ResultObject, Exception = result.Exception }, JsonRequestBehavior.AllowGet);
 		}
 

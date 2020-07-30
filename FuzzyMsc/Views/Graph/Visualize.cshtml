@@ -37,7 +37,7 @@
                                 <div class="form-group">
                                     <label class="col-md-6 control-label">{{'PleaseMakeARuleSelection' | translate}}</label>
                                     <div class="col-md-6">
-                                        <select class="form-control" ng-model="rule" ng-options="rule.ruleName for set in setList" ng-change="FetchRuleTextAndResistivity(rule)">
+                                        <select class="form-control" ng-model="rule" ng-options="rule.RuleName for set in setList" ng-change="FetchRuleTextAndResistivity(rule)">
                                             <option value="">{{'Select' | translate}}</option>
                                         </select>
                                     </div>

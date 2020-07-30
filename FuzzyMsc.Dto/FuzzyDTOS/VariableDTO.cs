@@ -8,7 +8,7 @@ namespace FuzzyMsc.Dto.FuzzyDTOS
 {
     public class VariableDTO
     {
-        public string VariableName { get; set; }
+        public string Name { get; set; }
         public string VisibleName { get; set; }
         public double MinValue { get; set; }
         public double MaxValue { get; set; }

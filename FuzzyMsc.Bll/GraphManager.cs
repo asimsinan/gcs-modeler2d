@@ -15,6 +15,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using FuzzyMsc.Entity.Model;
 
 namespace FuzzyMsc.Bll
 {
@@ -1266,6 +1267,37 @@ namespace FuzzyMsc.Bll
             }
         }
 
+
+        public ResultDTO FetchSetListLite(Rule rule)
+        {
+            ResultDTO result = new ResultDTO();
+            var rules = new List<Rule>() { rule };
+            try
+            {
+
+                var ruleList = rules.Select(k => new RuleEntityDTO
+                {
+                    RuleID = k.ruleID,
+                    RuleName = k.ruleName,
+                    AddDate = k.addDate,
+                    IsActive = k.isActive
+                }).ToList();
+                result.ResultObject = ruleList;
+                result.Success = true;
+                result.Message = "Success.";
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                result.ResultObject = null;
+                result.Success = false;
+                result.Message = "Başarısız.";
+                result.Exception = ex;
+                return result;
+            }
+        }
+
         public ResultDTO FetchRule(long ruleID)
         {
             ResultDTO result = new ResultDTO();
@@ -1304,7 +1336,7 @@ namespace FuzzyMsc.Bll
                 }).ToList();
                 var resistivityList = _variableItemService.Queryable().Where(d => d.variable.ruleID == ruleID && d.variable.variableTypeID == (byte)Enums.VariableType.Input).Select(d => new VariableDTO
                 {
-                    VariableName = d.variableItemName,
+                    Name = d.variableItemName,
                     MinValue = d.minValue,
                     MaxValue = d.maxValue,
                 }).ToList();
@@ -1672,16 +1704,18 @@ namespace FuzzyMsc.Bll
             }
             return datasetList;
         }
-        #endregion
-    }
+
+		#endregion
+	}
 
     public interface IGraphManager : IBaseManager
     {
         ResultDTO CheckExcel(ExcelModelDTO excel, string path);
         ResultDTO Visualize(GraphDTO graph, string path);
-        List<SeriesDTO> CreateGraphData(long kuralID, CrossSectionDTO kesitDTO, ParametersDTO parameters);
+        List<SeriesDTO> CreateGraphData(long ruleID, CrossSectionDTO sectionDTO, ParametersDTO parameters);
         ResultDTO FetchSetList();
-        ResultDTO FetchRule(long kuralID);
-        ResultDTO FetchRuleTextAndResistivity(long kuralID);
-    }
+        ResultDTO FetchSetListLite(Rule rule);
+        ResultDTO FetchRule(long ruleID);
+        ResultDTO FetchRuleTextAndResistivity(long ruleID);
+	}
 }

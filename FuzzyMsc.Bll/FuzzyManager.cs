@@ -58,18 +58,126 @@ namespace FuzzyMsc.Bll
 
             #region Database 
 
+            //try
+            //{
+            //    _unitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+
+            //    #region Fuzzy Rule
+            //    Rule rule = new Rule
+            //    {
+            //        ruleName = ruleSet.SetName,
+            //        isActive = true,
+            //        addDate = DateTime.Now
+            //    };
+            //    _ruleService.BulkInsert(rule);
+            //    #endregion
+
+            //    #region RuleListText
+            //    List<RuleListText> rules = new List<RuleListText>();
+            //    foreach (var RuleListItem in ruleSet.RuleList)
+            //    {
+            //        string ruleText = CreateRule(RuleListItem);
+            //        rules.Add(new RuleListText { ruleID = rule.ruleID, ruleText = ruleText });
+            //    }
+            //    _ruleListTextService.BulkInsertRange(rules);
+            //    #endregion
+
+            //    #region Input Variable
+            //    Variable resistivityVariable = new Variable
+            //    {
+            //        ruleID = rule.ruleID,
+            //        variableTypeID = (byte)Enums.VariableType.Input,
+            //        variableName = "Resistivity",
+            //        visibleVariableName = "Resistivity"
+            //    };
+            //    _variableService.BulkInsert(resistivityVariable);
+            //    var resistivityItem = (from a in resistivity
+            //                        select new VariableItem()
+            //                        {
+            //                            variableID = resistivityVariable.variableID,
+            //                            variableItemName = a.Name,
+            //                            variableItemVisibleName = a.VisibleName,
+            //                            minValue = a.MinValue,
+            //                            maxValue = a.MaxValue
+            //                        });
+            //    _variableItemService.BulkInsertRange(resistivityItem);
+            //    #endregion
+
+            //    #region Output Variable
+            //    Variable groundVariable = new Variable
+            //    {
+            //        ruleID = rule.ruleID,
+            //        variableTypeID = (byte)Enums.VariableType.Output,
+            //        variableName = "Ground",
+            //        visibleVariableName = "Ground"
+            //    };
+            //    _variableService.BulkInsert(groundVariable);
+            //    var groundItem = (from a in ground
+            //                      select new VariableItem()
+            //                      {
+            //                          variableID = groundVariable.variableID,
+            //                          variableItemName = a.Name,
+            //                          variableItemVisibleName = a.VisibleName,
+            //                          minValue = a.MinValue,
+            //                          maxValue = a.MaxValue
+            //                      });
+            //    _variableItemService.BulkInsertRange(groundItem);
+            //    #endregion
+
+
+
+            //    #region RuleList
+            //    List<RuleListItem> ruleListItem = new List<RuleListItem>();
+            //    for (int i = 0; i < ruleSet.RuleList.Count; i++)
+            //    {
+            //        var ruleList = (new RuleList { ruleID = rule.ruleID, orderNumber = (byte)(i + 1) });
+            //        _ruleListService.BulkInsert(ruleList);
+
+            //        foreach (var item in ruleSet.RuleList)
+            //        {
+            //            var InputVariableID = _variableItemService.Queryable().FirstOrDefault(d => d.variable.variableTypeID == (byte)Enums.VariableType.Input && d.variableItemName == item.Rule.Resistivity).variableItemID;
+            //            ruleListItem.Add(new RuleListItem { ruleListID = ruleList.ruleListID, variableItemID = InputVariableID });
+
+            //            var OutputVariableID = _variableItemService.Queryable().FirstOrDefault(d => d.variable.variableTypeID == (byte)Enums.VariableType.Output && d.variableItemName == item.Rule.Ground).variableItemID;
+            //            ruleListItem.Add(new RuleListItem { ruleListID = ruleList.ruleListID, variableItemID = InputVariableID });
+            //        }
+            //    }
+            //    _ruleListItemService.BulkInsertRange(ruleListItem);
+            //    #endregion
+
+            //    _unitOfWork.Commit();
+            //    result.Success = true;
+            //    result.Message = "Rule set successfully added";
+            //    result.ResultObject = null;
+            //    return result;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _unitOfWork.Rollback();
+            //    result.Success = false;
+            //    result.Message = "Error while adding rule set" + ex.Message;
+            //    result.ResultObject = null;
+            //    return result;
+            //}
+
+            #endregion
+
+            #region Lite Edition 
+
             try
             {
-                _unitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
-
+                //_unitOfWork.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                SessionDTO session = new SessionDTO();
                 #region Fuzzy Rule
                 Rule rule = new Rule
                 {
+                    ruleID = 0,
                     ruleName = ruleSet.SetName,
                     isActive = true,
                     addDate = DateTime.Now
                 };
-                _ruleService.BulkInsert(rule);
+                session.rule = rule;
+                //_ruleService.BulkInsert(rule);
                 #endregion
 
                 #region RuleListText
@@ -79,76 +187,91 @@ namespace FuzzyMsc.Bll
                     string ruleText = CreateRule(RuleListItem);
                     rules.Add(new RuleListText { ruleID = rule.ruleID, ruleText = ruleText });
                 }
-                _ruleListTextService.BulkInsertRange(rules);
+                session.rules = rules;
+                //_ruleListTextService.BulkInsertRange(rules);
                 #endregion
 
                 #region Input Variable
                 Variable resistivityVariable = new Variable
                 {
+                    variableID = 0,
                     ruleID = rule.ruleID,
                     variableTypeID = (byte)Enums.VariableType.Input,
                     variableName = "Resistivity",
                     visibleVariableName = "Resistivity"
                 };
-                _variableService.BulkInsert(resistivityVariable);
+                session.resistivityVariable = resistivityVariable;
+                //_variableService.BulkInsert(resistivityVariable);
                 var resistivityItem = (from a in resistivity
-                                    select new VariableItem()
-                                    {
-                                        variableID = resistivityVariable.variableID,
-                                        variableItemName = a.VariableName,
-                                        variableItemVisibleName = a.VisibleName,
-                                        minValue = a.MinValue,
-                                        maxValue = a.MaxValue
-                                    });
-                _variableItemService.BulkInsertRange(resistivityItem);
+                                       select new VariableItem()
+                                       {
+                                           variableID = resistivityVariable.variableID,
+                                           variableItemName = a.Name,
+                                           variable = resistivityVariable,
+                                           variableItemVisibleName = a.VisibleName,
+                                           minValue = a.MinValue,
+                                           maxValue = a.MaxValue
+                                       }).ToList();
+                session.resistivityItem = resistivityItem;
+                //_variableItemService.BulkInsertRange(resistivityItem);
                 #endregion
 
                 #region Output Variable
                 Variable groundVariable = new Variable
                 {
+                    variableID = 1,
                     ruleID = rule.ruleID,
                     variableTypeID = (byte)Enums.VariableType.Output,
                     variableName = "Ground",
                     visibleVariableName = "Ground"
                 };
-                _variableService.BulkInsert(groundVariable);
+                session.groundVariable = groundVariable;
+                //_variableService.BulkInsert(groundVariable);
                 var groundItem = (from a in ground
                                   select new VariableItem()
                                   {
                                       variableID = groundVariable.variableID,
-                                      variableItemName = a.VariableName,
+                                      variable = groundVariable,
+                                      variableItemName = a.Name,
                                       variableItemVisibleName = a.VisibleName,
                                       minValue = a.MinValue,
                                       maxValue = a.MaxValue
-                                  });
-                _variableItemService.BulkInsertRange(groundItem);
+                                  }).ToList();
+                session.groundItem = groundItem;
+                //_variableItemService.BulkInsertRange(groundItem);
                 #endregion
 
-
+                var variableItems = resistivityItem.Union(groundItem).ToList();
+				for (int i = 0; i < variableItems.Count; i++)
+                    variableItems[i].variableItemID = i;
 
                 #region RuleList
+                List<RuleList> _ruleList = new List<RuleList>();
                 List<RuleListItem> ruleListItem = new List<RuleListItem>();
                 for (int i = 0; i < ruleSet.RuleList.Count; i++)
                 {
-                    var ruleList = (new RuleList { ruleID = rule.ruleID, orderNumber = (byte)(i + 1) });
-                    _ruleListService.BulkInsert(ruleList);
+                    var ruleList = (new RuleList { ruleListID = i, ruleID = rule.ruleID, orderNumber = (byte)(i + 1) });
+                    _ruleList.Add(ruleList);
+                    //_ruleListService.BulkInsert(ruleList);
 
                     foreach (var item in ruleSet.RuleList)
                     {
-                        var InputVariableID = _variableItemService.Queryable().FirstOrDefault(d => d.variable.variableTypeID == (byte)Enums.VariableType.Input && d.variableItemName == item.FuzzyRule.Resistivity).variableItemID;
+                        var InputVariableID = variableItems.FirstOrDefault(d => d.variable.variableTypeID == (byte)Enums.VariableType.Input && d.variableItemName == item.Rule.Resistivity).variableItemID;
                         ruleListItem.Add(new RuleListItem { ruleListID = ruleList.ruleListID, variableItemID = InputVariableID });
 
-                        var OutputVariableID = _variableItemService.Queryable().FirstOrDefault(d => d.variable.variableTypeID == (byte)Enums.VariableType.Output && d.variableItemName == item.FuzzyRule.Ground).variableItemID;
+                        var OutputVariableID = variableItems.FirstOrDefault(d => d.variable.variableTypeID == (byte)Enums.VariableType.Output && d.variableItemName == item.Rule.Ground).variableItemID;
                         ruleListItem.Add(new RuleListItem { ruleListID = ruleList.ruleListID, variableItemID = InputVariableID });
                     }
                 }
-                _ruleListItemService.BulkInsertRange(ruleListItem);
+                session.ruleList = _ruleList;
+                session.ruleListItem = ruleListItem;
+                //_ruleListItemService.BulkInsertRange(ruleListItem);
                 #endregion
 
-                _unitOfWork.Commit();
+                //_unitOfWork.Commit();
                 result.Success = true;
                 result.Message = "Rule set successfully added";
-                result.ResultObject = null;
+                result.ResultObject = session;
                 return result;
             }
             catch (Exception ex)
@@ -314,7 +437,7 @@ namespace FuzzyMsc.Bll
             string EnChar = "igusocGUSIOC";
             foreach (var item in variable)
             {
-                item.VisibleName = item.VariableName.Replace(" ", "");
+                item.VisibleName = item.Name.Replace(" ", "");
                 for (int i = 0; i < TrChar.Length; i++)
                 {
                     item.VisibleName = item.VisibleName.Replace(TrChar[i], EnChar[i]);
@@ -325,8 +448,8 @@ namespace FuzzyMsc.Bll
 
         private string CreateRule(RuleListDTO ruleList)
         {
-            var resistivity = TurkishChar(ruleList.FuzzyRule.Resistivity);
-            var ground = TurkishChar(ruleList.FuzzyRule.Ground);
+            var resistivity = TurkishChar(ruleList.Rule.Resistivity);
+            var ground = TurkishChar(ruleList.Rule.Ground);
 
             return "if (Ozdirenc is " + resistivity + ") then (Toprak is " + ground + ")";
 
