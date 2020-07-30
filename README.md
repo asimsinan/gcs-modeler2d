@@ -11,5 +11,10 @@ Storage and management of rules and visualization data was done with Microsoft S
 - We used Microsoft Visual Studio 2017 as the software development IDE
 
 # How to run the software
-  1. 
-  2. 
+  1. You can use the publish tool from Visual Studio to publish this project to a website.
+  2. Open the FuzzyMsc.sln file with Visual Studio.
+  3. In Solution Explorer, right-click on the master project and choose Publish.
+  4. In the Publish dialog box, choose Web Server (IIS).
+  5. Choose Web Deploy as the deployment method.
+  6. Configure the settings (Website name, username, password etc) for the publish method and select Finish.
+  7. Go to your website by typing the url and start using the application.
