@@ -69,6 +69,8 @@ namespace FuzzyMsc.Controllers
 			Session["ruleList"] = session.ruleList;
 			Session["ruleListItem"] = session.ruleListItem;
 			Session["rules"] = session.rules;
+			Session["variables"] = session.variables;
+			Session["variableItems"] = session.variableItems;
 
 			return Json(new { Success = result.Success, ResultObject = result.ResultObject, Message = result.Message, Exception = result.Exception }, JsonRequestBehavior.AllowGet);
 
