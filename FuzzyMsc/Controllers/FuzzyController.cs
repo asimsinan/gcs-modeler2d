@@ -57,11 +57,22 @@ namespace FuzzyMsc.Controllers
 		[HttpPost]
 		public JsonResult SaveSet(RuleSetDTO ruleSet)
 		{
-			
-			var result = _fuzzyManager.SaveSet(ruleSet);
-		
 
-			return Json(new {Success = result.Success, ResultObject = result.ResultObject, Message = result.Message, Exception = result.Exception }, JsonRequestBehavior.AllowGet);
+			var result = _fuzzyManager.SaveSet(ruleSet);
+
+			var session = (SessionDTO)result.ResultObject;
+			Session["groundItem"] = session.groundItem;
+			Session["groundVariable"] = session.groundVariable;
+			Session["resistivityItem"] = session.resistivityItem;
+			Session["resistivityVariable"] = session.resistivityVariable;
+			Session["rule"] = session.rule;
+			Session["ruleList"] = session.ruleList;
+			Session["ruleListItem"] = session.ruleListItem;
+			Session["rules"] = session.rules;
+			Session["variables"] = session.variables;
+			Session["variableItems"] = session.variableItems;
+
+			return Json(new { Success = result.Success, ResultObject = result.ResultObject, Message = result.Message, Exception = result.Exception }, JsonRequestBehavior.AllowGet);
 
 		}
 	}

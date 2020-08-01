@@ -29,7 +29,7 @@
             minValue: 50,
             maxValue: 70
         }, {
-            name: "Very High",
+            name: "Veryhigh",
             minValue: 70,
             maxValue: 1000
         }];

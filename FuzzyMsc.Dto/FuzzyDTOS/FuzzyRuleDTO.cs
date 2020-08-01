@@ -28,7 +28,7 @@ namespace FuzzyMsc.Dto.FuzzyDTOS
     public class RuleListDTO
     {
         public string Text { get; set; }
-        public RuleDTO FuzzyRule { get; set; }
+        public RuleDTO Rule { get; set; }
     }
 
     public class RuleDTO

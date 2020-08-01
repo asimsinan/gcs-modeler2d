@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SessionDTO.cs" />
     <Compile Include="VisualizationDTOS\VisualizationCountDTO.cs" />
     <Compile Include="VisualizationDTOS\VisualizationDetailDTO.cs" />
     <Compile Include="VisualizationDTOS\NodeDTO.cs" />
