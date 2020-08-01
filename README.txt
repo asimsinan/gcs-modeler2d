@@ -1,1 +1,0 @@
--	There is no README file at all in the GitHub repo. The README should at least briefly cover what is presented software, what’s it’s use cases, and how can it be utilized.
