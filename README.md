@@ -30,3 +30,9 @@ Storage and management of rules and visualization data was done with Microsoft S
   
  # Dataset
  You can use [this dataset](https://data.mendeley.com/datasets/pnd5789gyz/1) to try the application
+ 
+ # Youtube Video
+ Below is the video of the working product.
+ 
+ [![](http://img.youtube.com/vi/UnUwVP-Ulfs/0.jpg)](http://www.youtube.com/watch?v=UnUwVP-Ulfs "")
+
