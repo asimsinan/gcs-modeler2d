@@ -27,3 +27,6 @@ Storage and management of rules and visualization data was done with Microsoft S
   5. Choose Web Deploy as the deployment method.
   6. Configure the settings (Website name, username, password etc) for the publish method and select Finish.
   7. Go to your website by typing the url and start using the application.
+  
+ # Dataset
+ You can use [this dataset](https://data.mendeley.com/datasets/pnd5789gyz/1) to try the application
