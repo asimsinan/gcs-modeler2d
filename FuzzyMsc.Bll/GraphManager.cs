@@ -6,7 +6,7 @@ using FuzzyMsc.Dto.FuzzyDTOS;
 using FuzzyMsc.Dto.HighchartsDTOS;
 using FuzzyMsc.Pattern.UnitOfWork;
 using FuzzyMsc.Service;
-using Microsoft.Office.Interop.Excel;
+//using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,6 +16,8 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using FuzzyMsc.Entity.Model;
+using ExcelDataReader;
+using Accord;
 
 namespace FuzzyMsc.Bll
 {
@@ -99,15 +101,15 @@ namespace FuzzyMsc.Bll
         HighchartsDTO highcharts = new HighchartsDTO();
 
         #region Resistivity
-        CreateResistivity(highcharts, xlWorkbook);
+        //CreateResistivity(highcharts, xlWorkbook);
         #endregion
 
         #region Seismic
-        CreateSeismic(highcharts, xlWorkbook);
+        //CreateSeismic(highcharts, xlWorkbook);
         #endregion
 
         #region Drilling
-        CreateDrilling(highcharts, xlWorkbook);
+        //CreateDrilling(highcharts, xlWorkbook);
         #endregion
 
         //highcharts.series.AddRange(GraphDataOlustur(sisGenelList));
@@ -144,7 +146,86 @@ namespace FuzzyMsc.Bll
 
       }
     }
+    public ResultDTO VisualizeEDR(GraphDTO graph, string path, SessionDTO sessionItem)
+    {
+      session = sessionItem;
+      ResultDTO result = new ResultDTO();
+      try
+      {
+        File.WriteAllBytes(path, Convert.FromBase64String(graph.excel.data));
+        using (var stream = File.Open(path, FileMode.Open, FileAccess.Read))
+        {
+          // Auto-detect format, supports:
+          //  - Binary Excel files (2.0-2003 format; *.xls)
+          //  - OpenXml Excel files (2007 format; *.xlsx)
+          using (var reader = ExcelReaderFactory.CreateReader(stream))
+          {
+            // Choose one of either 1 or 2:
 
+            // 1. Use the reader methods
+            do
+            {
+              while (reader.Read())
+              {
+                // reader.GetDouble(0);
+              }
+            } while (reader.NextResult());
+
+            // 2. Use the AsDataSet extension method
+            var excelResult = reader.AsDataSet();
+
+            HighchartsDTO highcharts = new HighchartsDTO();
+
+            #region Resistivity
+            CreateResistivity(highcharts, excelResult);
+            #endregion
+
+            #region Seismic
+            CreateSeismic(highcharts, excelResult);
+            #endregion
+
+            #region Drilling
+            CreateDrilling(highcharts, excelResult);
+            #endregion
+
+            CrossSectionDTO crossSectionDTO = new CrossSectionDTO { ResList = resList, SisList = sisList, DrillList = drillList };
+            highcharts.series.AddRange(CreateGraphData(graph.ruleID, crossSectionDTO, graph.parameters));
+
+            bool isFault = highcharts.series.Any(s => s.name == "Fault");
+
+            if (isFault)
+              highcharts.series.AddRange(CreateGraphData(graph.ruleID, crossSectionDTO, graph.parameters));
+
+            highcharts.series = highcharts.series.Distinct().ToList();
+
+            double minX = CalculateMin(highcharts);
+            highcharts.xAxis = new AxisDTO { min = 0, minTickInterval = (int)graph.parameters.ScaleX, offset = 20, title = new AxisTitleDTO { text = "Width" }, labels = new AxisLabelsDTO { format = "{value} m" } };
+            highcharts.yAxis = new AxisDTO { min = (int)minX - 5, minTickInterval = (int)graph.parameters.ScaleY, offset = 20, title = new AxisTitleDTO { text = "Height" }, labels = new AxisLabelsDTO { format = "{value} m" } };
+
+            highcharts.parameters = graph.parameters;
+
+            highcharts.visualizationInfo = visualizationDetailList;
+
+            result.ResultObject = highcharts;
+            result.Success = true;
+            return result;
+
+            // The result of each spreadsheet is in result.Tables
+          }
+        }
+
+        //return result;
+      }
+      catch (Exception ex)
+      {
+        return result;
+        //xlWorkbook.Close();
+        //xl.Quit();
+        //Process process = Process.GetProcessById(id);
+        //process.Kill();
+
+      }
+    }
     private double CalculateSuccess(VisualizationCountDTO visualizationCount, VisualizationCountDTO defaultCount)
     {
       double ratio = 100.0;
@@ -186,24 +267,26 @@ namespace FuzzyMsc.Bll
       return min;
     }
 
-    private void CreateResistivity(HighchartsDTO highcharts, Workbook xlWorkbook)
+    private void CreateResistivity(HighchartsDTO highcharts, System.Data.DataSet xlWorkbook)
     {
       resList = new List<List<ResistivityDTO>>();
       List<ResistivityDTO> rezList = new List<ResistivityDTO>();
       ResistivityDTO rezItem = new ResistivityDTO();
-      Microsoft.Office.Interop.Excel._Worksheet xlWorksheetResistivity = (Microsoft.Office.Interop.Excel._Worksheet)xlWorkbook.Sheets[1];
-      Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheetResistivity.UsedRange;
+      //Microsoft.Office.Interop.Excel._Worksheet xlWorksheetResistivity = (Microsoft.Office.Interop.Excel._Worksheet)xlWorkbook.Sheets[1];
+      //Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheetResistivity.UsedRange;
+
+      var xlWorksheetResistivity = xlWorkbook.Tables[0];
       #region Table Raw Col
-      int rowCount = xlRange.Rows.Count;
-      int colCount = xlRange.Columns.Count;
-      for (int i = 1; i <= rowCount; i++)
-      {
-        if (string.IsNullOrEmpty((xlWorksheetResistivity.Cells[i + 1, 1]).Value))
-        {
-          rowCount = i;
-          break;
-        }
-      }
+      int rowCount = xlWorksheetResistivity.Rows.Count;
+      int colCount = xlWorksheetResistivity.Columns.Count;
+      //for (int i = 1; i <= rowCount; i++)
+      //{
+      //  if (string.IsNullOrEmpty((xlWorksheetResistivity.Rows[i + 1][1]).ToString()))
+      //  {
+      //    rowCount = i;
+      //    break;
+      //  }
+      //}
       #endregion
 
       #region Depth Equality
@@ -211,20 +294,20 @@ namespace FuzzyMsc.Bll
       List<List<ExcelDTO>> rezExcel = new List<List<ExcelDTO>>();
       List<ExcelDTO> rezExcelItem;
       #region Data
-      for (int i = 2; i < rowCount + 1; i++)
+      for (int i = 1; i < rowCount; i++)
       {
         rezExcelItem = new List<ExcelDTO>();
-        for (int j = 1; j < colCount + 1; j++)
+        for (int j = 0; j < colCount; j++)
         {
           ExcelDTO Instance;
-          if ((xlWorksheetResistivity.Cells[i, j]).Value == null)
+          if ((xlWorksheetResistivity.Rows[i][j]) == null)
           {
             Instance = new ExcelDTO { TypeID = (byte)Enums.ExcelDataType.Real, Value = "" };
             rezExcelItem.Add(Instance);
           }
           else
           {
-            var value = (string)(xlWorksheetResistivity.Cells[i, j]).Value.ToString();
+            var value = (string)(xlWorksheetResistivity.Rows[i][j]).ToString();
             Instance = new ExcelDTO { TypeID = (byte)Enums.ExcelDataType.Real, Value = value };
             rezExcelItem.Add(Instance);
           }
@@ -346,24 +429,26 @@ namespace FuzzyMsc.Bll
 
       highcharts = CreateChart(highcharts, resList);
     }
-    private void CreateSeismic(HighchartsDTO highcharts, Workbook xlWorkbook)
+    private void CreateSeismic(HighchartsDTO highcharts, System.Data.DataSet xlWorkbook)
     {
       this.sisList = new List<List<SeismicDTO>>();
       List<SeismicDTO> sisList = new List<SeismicDTO>();
       SeismicDTO sisItem = new SeismicDTO();
-      Microsoft.Office.Interop.Excel._Worksheet xlWorksheetSismik = (Microsoft.Office.Interop.Excel._Worksheet)xlWorkbook.Sheets[2];
-      Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheetSismik.UsedRange;
+      //Microsoft.Office.Interop.Excel._Worksheet xlWorksheetSismik = (Microsoft.Office.Interop.Excel._Worksheet)xlWorkbook.Sheets[2];
+      //Microsoft.Office.Interop.Excel.Range xlRange = xlWorksheetSismik.UsedRange;
+
+      var xlWorksheetSismik = xlWorkbook.Tables[1];
       #region Table Row Col
-      int rowCount = xlRange.Rows.Count;
-      int colCount = xlRange.Columns.Count;
-      for (int i = 1; i <= rowCount; i++)
-      {
-        if (string.IsNullOrEmpty((xlWorksheetSismik.Cells[i + 1, 1]).Value))
-        {
-          rowCount = i;
-          break;
-        }
-      }
+      int rowCount = xlWorksheetSismik.Rows.Count;
+      int colCount = xlWorksheetSismik.Columns.Count;
+      //for (int i = 1; i <= rowCount; i++)
+      //{
+      //  if (string.IsNullOrEmpty((xlWorksheetSismik.Rows[i + 1][1]).ToString()))
+      //  {
+      //    rowCount = i;
+      //    break;
+      //  }
+      //}
       #endregion
 
       #region Depth Equality
@@ -371,20 +456,20 @@ namespace FuzzyMsc.Bll
       List<List<ExcelDTO>> sisExcel = new List<List<ExcelDTO>>();
       List<ExcelDTO> sisExcelItem;
       #region Data
-      for (int i = 2; i < rowCount + 1; i++)
+      for (int i = 1; i < rowCount; i++)
       {
         sisExcelItem = new List<ExcelDTO>();
-        for (int j = 1; j < colCount + 1; j++)
+        for (int j = 0; j < colCount; j++)
         {
           ExcelDTO Instance;
-          if ((xlWorksheetSismik.Cells[i, j]).Value == null)
+          if ((xlWorksheetSismik.Rows[i][j]) == null)
           {
             Instance = new ExcelDTO { TypeID = (byte)Enums.ExcelDataType.Real, Value = "" };
             sisExcelItem.Add(Instance);
           }
           else
           {
-            var value = (string)(xlWorksheetSismik.Cells[i, j]).Value.ToString();
+            var value = (string)(xlWorksheetSismik.Rows[i][j]).ToString();
             Instance = new ExcelDTO { TypeID = (byte)Enums.ExcelDataType.Real, Value = value };
             sisExcelItem.Add(Instance);
           }
@@ -511,71 +596,75 @@ namespace FuzzyMsc.Bll
 
       highcharts = CreateChart(highcharts, this.sisList);
     }
-    private void CreateDrilling(HighchartsDTO highcharts, Workbook xlWorkbook)
+    private void CreateDrilling(HighchartsDTO highcharts, System.Data.DataSet xlWorkbook)
     {
       drillList = new List<List<DrillingDTO>>();
       List<DrillingDTO> drillingList = new List<DrillingDTO>();
       DrillingDTO drillingItem = new DrillingDTO();
-      Microsoft.Office.Interop.Excel._Worksheet xlWorkSheetDrilling = (Microsoft.Office.Interop.Excel._Worksheet)xlWorkbook.Sheets[3];
-      Microsoft.Office.Interop.Excel.Range xlRange = xlWorkSheetDrilling.UsedRange;
+      //Microsoft.Office.Interop.Excel._Worksheet xlWorkSheetDrilling = (Microsoft.Office.Interop.Excel._Worksheet)xlWorkbook.Sheets[3];
+      //Microsoft.Office.Interop.Excel.Range xlRange = xlWorkSheetDrilling.UsedRange;
+
+      var xlWorkSheetDrilling = xlWorkbook.Tables[2];
       #region Table Row Col
-      int rowCount = xlRange.Rows.Count;
-      int colCount = xlRange.Columns.Count;
-      for (int i = 1; i <= rowCount; i++)
-      {
-        if (string.IsNullOrEmpty((xlWorkSheetDrilling.Cells[i + 1, 1]).Value))
-        {
-          rowCount = i;
-          break;
-        }
-      }
+      int rowCount = xlWorkSheetDrilling.Rows.Count;
+      int colCount = xlWorkSheetDrilling.Columns.Count;
+      //for (int i = 1; i <= rowCount; i++)
+      //{
+      //  var value = xlWorkSheetDrilling.Rows[i + 1][1].ToString();
+      //  if (string.IsNullOrEmpty(value))
+      //  {
+      //    rowCount = i;
+      //    break;
+      //  }
+      //}
       #endregion
 
-      for (int i = 1; i < rowCount; i++)
+      for (int i = 0; i < rowCount - 1; i++)
       {
         drillingItem = new DrillingDTO();
         drillingItem.ID = i;
-        drillingItem.Name = (string)(xlWorkSheetDrilling.Cells[i + 1, 1]).Value.ToString();
-        drillingItem.X = (double)(xlWorkSheetDrilling.Cells[i + 1, 2]).Value;
-        drillingItem.K = (double)(xlWorkSheetDrilling.Cells[i + 1, 4]).Value;
+        drillingItem.Name = (string)(xlWorkSheetDrilling.Rows[i + 1][0]).ToString();
+        drillingItem.X = (double)(xlWorkSheetDrilling.Rows[i + 1][1]);
+        drillingItem.K = (double)(xlWorkSheetDrilling.Rows[i + 1][3]);
         drillingList.Add(drillingItem);
       }
       drillList.Add(drillingList);
 
       int count = 0;
-      for (int j = 5; j <= colCount; j = j + 2)
+      for (int j = 4; j < colCount - 1; j = j + 2)
       {
         count++;
         drillingList = new List<DrillingDTO>();
-        for (int i = 1; i <= rowCount; i++)
+        for (int i = 0; i < rowCount - 1; i++)
         {
 
           drillingItem = new DrillingDTO();
-          if ((xlWorkSheetDrilling.Cells[i + 1, j]).Value == null && (xlWorkSheetDrilling.Cells[i + 1, j + 1]).Value == null)
+          if ((xlWorkSheetDrilling.Rows[i + 1][j]) == null && (xlWorkSheetDrilling.Rows[i + 1][j + 1]) == null)
           {
             continue;
           }
-          if ((xlWorkSheetDrilling.Cells[i + 1, j]).Value == null && (xlWorkSheetDrilling.Cells[i + 1, j + 1]).Value != null)
+          if ((xlWorkSheetDrilling.Rows[i + 1][j]) == null && (xlWorkSheetDrilling.Rows[i + 1][j + 1]) != null)
           {
             drillingItem.ID = i;
-            drillingItem.Name = (string)(xlWorkSheetDrilling.Cells[i + 1, 1]).Value.ToString() + count.ToString();
-            drillingItem.X = (double)(xlWorkSheetDrilling.Cells[i + 1, 2]).Value;
-            drillingItem.K = ((double)(xlWorkSheetDrilling.Cells[i + 1, 4]).Value - (double)(xlWorkSheetDrilling.Cells[i + 1, j - 2]).Value) * 0.99;
-            drillingItem.T = (xlWorkSheetDrilling.Cells[i + 1, j + 1]).Value == null ? "" : (xlWorkSheetDrilling.Cells[i + 1, j + 1]).Value;
+            drillingItem.Name = (string)(xlWorkSheetDrilling.Rows[i + 1][0]).ToString() + count.ToString();
+            drillingItem.X = (double)(xlWorkSheetDrilling.Rows[i + 1][1]);
+            drillingItem.K = ((double)(xlWorkSheetDrilling.Rows[i + 1][3]) - (double)(xlWorkSheetDrilling.Rows[i + 1][j - 2])) * 0.99;
+            drillingItem.T = (xlWorkSheetDrilling.Rows[i + 1][j + 1]) == null ? "" : (xlWorkSheetDrilling.Rows[i + 1][j + 1]).ToString();
             drillingList.Add(drillingItem);
             continue;
           }
           drillingItem.ID = i;
-          drillingItem.Name = (string)(xlWorkSheetDrilling.Cells[i + 1, 1]).Value.ToString() + count.ToString();
-          drillingItem.X = (double)(xlWorkSheetDrilling.Cells[i + 1, 2]).Value;
-          drillingItem.K = (xlWorkSheetDrilling.Cells[i + 1, j]).Value == null ? 0 : (double)(xlWorkSheetDrilling.Cells[i + 1, 4]).Value - (double)(xlWorkSheetDrilling.Cells[i + 1, j]).Value;
-          drillingItem.T = (xlWorkSheetDrilling.Cells[i + 1, j + 1]).Value == null ? "" : ((xlWorkSheetDrilling.Cells[i + 1, j + 1]).Value).ToString();
+          drillingItem.Name = (string)(xlWorkSheetDrilling.Rows[i + 1][0]).ToString() + count.ToString();
+          drillingItem.X = (double)(xlWorkSheetDrilling.Rows[i + 1][1]);
+          var value = xlWorkSheetDrilling.Rows[i + 1][j].ToString();
+          drillingItem.K = (xlWorkSheetDrilling.Rows[i + 1][j]).ToString() == "" ? 0 : (double)(xlWorkSheetDrilling.Rows[i + 1][3]) - (double)(xlWorkSheetDrilling.Rows[i + 1][j]);
+          drillingItem.T = (xlWorkSheetDrilling.Rows[i + 1][j + 1]).ToString() == "" ? "" : ((xlWorkSheetDrilling.Rows[i + 1][j + 1])).ToString();
           drillingList.Add(drillingItem);
         }
         drillList.Add(drillingList);
       }
 
-      highcharts = ChartOlustur(highcharts, drillList);
+      highcharts = CreateChart(highcharts, drillList);
     }
 
     private HighchartsDTO CreateChart(HighchartsDTO highcharts, List<List<ResistivityDTO>> resList)
@@ -592,7 +681,7 @@ namespace FuzzyMsc.Bll
 
       return highcharts;
     }
-    private HighchartsDTO ChartOlustur(HighchartsDTO highcharts, List<List<DrillingDTO>> drillingList)
+    private HighchartsDTO CreateChart(HighchartsDTO highcharts, List<List<DrillingDTO>> drillingList)
     {
 
       highcharts.annotations.AddRange(CreateGraphAnnotations(drillingList));
@@ -639,10 +728,10 @@ namespace FuzzyMsc.Bll
         foreach (var sisItem in sisList[i])
         {
           if (i == 0)
-            label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = sisItem.Name, shape = "connector", allowOverlap = true, style = new StyleDTO { fontSize = "16px", color = "contrast" } };
+            label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = sisItem.Name, shape = "connector", allowOverlap = true };
           //label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = sisItem.Adi + "<br>X:" + sisItem.X + " Y:" + sisItem.K, shape = "connector", allowOverlap = true };
           else
-            label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = "Vp = " + sisItem.Vp + "m/s<br>Vs =" + sisItem.Vs + "m/s", shape = "connector", allowOverlap = true, style = new StyleDTO { fontSize = "16px", color = "contrast" } };
+            label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = "Vp = " + sisItem.Vp + "m/s<br>Vs =" + sisItem.Vs + "m/s", shape = "connector", allowOverlap = true };
           //label = new AnnotationLabelsDTO { x = 20, y = -20, point = new PointDTO { xAxis = 0, yAxis = 0, x = sisItem.X, y = sisItem.K }, text = "Vp = " + sisItem.Vp + "m/s<br>Vs =" + sisItem.Vs + "m/s<br>X:" + sisItem.X + " Y:" + sisItem.K, shape = "connector", allowOverlap = true };
           annotations.labels.Add(label);
         }
@@ -1714,6 +1803,7 @@ namespace FuzzyMsc.Bll
   {
     ResultDTO CheckExcel(ExcelModelDTO excel, string path);
     ResultDTO Visualize(GraphDTO graph, string path, SessionDTO session);
+    ResultDTO VisualizeEDR(GraphDTO graph, string path, SessionDTO session);
     List<SeriesDTO> CreateGraphData(long ruleID, CrossSectionDTO sectionDTO, ParametersDTO parameters);
     ResultDTO FetchSetList();
     ResultDTO FetchSetListLite(Rule rule);

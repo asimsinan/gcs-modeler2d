@@ -131,7 +131,8 @@ namespace FuzzyMsc.Controllers
         };
         Rule rule = (Rule)Session["rule"];
         List<VariableItem> variableItems = (List<VariableItem>)Session["variableItems"];
-        result = _graphManager.Visualize(graph, path, session);
+        result = _graphManager.VisualizeEDR(graph, path, session);
+        //result = _graphManager.Visualize(graph, path, session);
         return Json(new { Success = result.Success, Message = result.Message, ResultObject = result.ResultObject }, JsonRequestBehavior.AllowGet);
       }
       catch (Exception ex)

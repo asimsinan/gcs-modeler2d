@@ -12,7 +12,7 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
     public List<AnnotationLabelsDTO> labels { get; set; }
     public bool? visible { get; set; }
 
-    public AnnotationLabelOptionsDTO labelOptions { get; set; }
+    //public AnnotationLabelOptionsDTO labelOptions { get; set; }
     
 
   }
@@ -28,7 +28,7 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
     public double borderRadius { get; set; }
     public double borderWidth { get; set; }
     public bool crop { get; set; }
-    public StyleDTO style { get; set; }
+    //public StyleDTO style { get; set; }
 
   }
 
@@ -40,7 +40,7 @@ namespace FuzzyMsc.Dto.HighchartsDTOS
     public double? y { get; set; }
     public string shape { get; set; }
     public bool allowOverlap { get; set; }
-    public StyleDTO style { get; set; }
+    //public StyleDTO style { get; set; }
   }
   public class ShapeOptionsDTO
   {
