@@ -34,7 +34,7 @@ Storage and management of rules and visualization data was done with Microsoft S
  # Youtube Video
  Below is the video of the working product.
  
- [![](http://img.youtube.com/vi/UnUwVP-Ulfs/0.jpg)](http://www.youtube.com/watch?v=UnUwVP-Ulfs "")
+ [![](http://img.youtube.com/watch?v=5chlulmkqpU/0.jpg)](https://www.youtube.com/watch?v=5chlulmkqpU)
  
 # Comparison of Hand-Drawn Cross-Section and Cross-Section Visualized With GCS-Modeler2D
  
