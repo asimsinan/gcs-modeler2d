@@ -29,10 +29,33 @@ Storage and management of rules and visualization data was done with Microsoft S
   7. Go to your website by typing the url and start using the application.
   
  # Dataset
- You can use [this dataset](https://data.mendeley.com/datasets/pnd5789gyz/1) to try the application
+ You can use [this dataset](https://data.mendeley.com/datasets/pnd5789gyz/1) to try the application.
  
  # Youtube Video
  Below is the video of the working product.
  
  [![](http://img.youtube.com/vi/UnUwVP-Ulfs/0.jpg)](http://www.youtube.com/watch?v=UnUwVP-Ulfs "")
+ 
+# Comparison of Hand-Drawn Cross-Section and Cross-Section Visualized With GCS-Modeler2D
+ 
+## Dataset-1
+ 
+Hand-Drawn Cross-Section
+
+Cross-Section Visualized With GCS-Modeler2D
+
+## Dataset-2
+ 
+Hand-Drawn Cross-Section
+
+Cross-Section Visualized With GCS-Modeler2D
+
+## Dataset-3
+ 
+Hand-Drawn Cross-Section
+
+Cross-Section Visualized With GCS-Modeler2D
+
+
+
 
