@@ -36,26 +36,6 @@ Storage and management of rules and visualization data was done with Microsoft S
  
 [![](http://img.youtube.com/vi/5chlulmkqpU/1.jpg)](http://www.youtube.com/watch?v=5chlulmkqpU "")
  
-# Comparison of Hand-Drawn Cross-Section and Cross-Section Visualized With GCS-Modeler2D
- 
-## Dataset-1
- 
-Hand-Drawn Cross-Section
-
-Cross-Section Visualized With GCS-Modeler2D
-
-## Dataset-2
- 
-Hand-Drawn Cross-Section
-
-Cross-Section Visualized With GCS-Modeler2D
-
-## Dataset-3
- 
-Hand-Drawn Cross-Section
-
-Cross-Section Visualized With GCS-Modeler2D
-
 
 
 
