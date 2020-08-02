@@ -29,7 +29,7 @@
     LoadingUnsuccessful: 'Loading Unsuccessful',
     ExcelWarning: 'An Error Occured While Checking The Excel File',
     StepThreeSettings: 'Step 3 - Settings',
-    SaveAndDraw: 'Save And Draw',
+    SaveAndDraw: 'Save And Visualize',
     Clean: 'Clean',
     ResetToDefault: 'Reset To Default',
     ResultGraph: 'Result - Graph',
