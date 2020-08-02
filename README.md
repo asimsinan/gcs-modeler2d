@@ -4,11 +4,8 @@ GCS-Modeler2D stands for Geotechnical Cross-Section Modeler 2D. It is an online 
 
 # Team
 * **Asst. Prof. Dr. Asım Sinan Yüksel:** Süleyman Demirel University Department of Computer Engineering, Algorithm Design, Architectural Design, Testing
-<<<<<<< HEAD
 * **Kaan Er:** Süleyman Demirel University Department of Computer Engineering, Front-End and Back-End
-=======
 * **Kaan Er:** Süleyman Demirel University Department of Computer Engineering, Coding, Coding Front-End and Back-End
->>>>>>> session-update
 * **Assoc. Prof. Dr. Osman Uyanık:** Süleyman Demirel University Department of Geophysics Engineering, Theorical Foundations of Geotechnical Cross-Sections, Testing
 
 # Technology behind GCS-Modeler2D
