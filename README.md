@@ -8,10 +8,10 @@ GCS-Modeler2D stands for Geotechnical Cross-Section Modeler 2D. It is an online 
 * **Assoc. Prof. Dr. Osman Uyanık:** Süleyman Demirel University Department of Geophysics Engineering, Theorical Foundations of Geotechnical Cross-Sections, Testing
 
 # Technology behind GCS-Modeler2D
-We built GCS-Modeler2D on various cutting-edge open source technologies as listed below. 
+We built GCS-Modeler2D on various open source technologies as listed below. 
 - We used Angular as the front-end web framework.
 - Bootstrap and HTML for the design of typography, forms, buttons and tables.
-Storage and management of rules and visualization data was done with Microsoft SQL Server with entity framework that enables us to work with data using objects of domain specific classes. However, currently entity framework is disabled (session is enabled) and related codes are commented for easy of use. It can be re-enabled for further development.
+ Microsoft SQL Server and Entity framework were usede for storage and management of rules and visualization data. However, entity framework is currently disabled (session is enabled) and related codes are commented for easy of use. It can be re-enabled for further development.
 - The back-end of GCS-Modeler2D was written in C# language and .NET was used as server-side web-application framework.
 - We also used technologies such as Javascript and JSON to make pages more interactive with the user, providing asynchronous information requests. 
 - Highcharts Javascript library was used for visualization of geotechnical cross-sections. This charting library is written in pure JavaScript and offers an easy way of adding interactive cross-sections to our web application.
