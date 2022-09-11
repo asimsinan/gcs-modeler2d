@@ -1,4 +1,3 @@
-Demo application is available at http://gcsmodeler2d.site
 # What is GCS-Modeler2D?
 GCS-Modeler2D stands for Geotechnical Cross-Section Modeler 2D. It is an online data visualization application for modeling geotechnical cross-sections. In real life, the visualization process is done by hand either on a pice of paper or on a PC by using a drawing tool. Visualizations vary depending on the researcher’s academic knowledge, intuition and drawing ability. For this reason, we've developed an application that standardizes the process and has the ability to visualize cross-sections fast and in a practical way. GCS-Modeler2D can automatically generate geotechnical cross-sections with the mean visualization accuracy of 88.39%. It takes the electrical resistivity, seismic velocity and mechanical drilling values as input and outputs an underground cross-section. Cross-sections can also be edited by hand, if there are errors on the visualization.
 
@@ -30,11 +29,6 @@ We built GCS-Modeler2D on various open source technologies as listed below.
   
  # Dataset
  You can use [this dataset](https://data.mendeley.com/datasets/pnd5789gyz/1) to try the application.
- 
- # Youtube Video
- Below is the video of the working product.
- 
-[![](http://img.youtube.com/vi/5chlulmkqpU/1.jpg)](http://www.youtube.com/watch?v=5chlulmkqpU "")
  
 
 
